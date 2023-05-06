@@ -13,7 +13,7 @@ export const Footer = () => {
         <Text>
           Powered by{" "}
           <Anchor href="https://github.com/Xhofe/alist" external>
-            Alist
+            AList
           </Anchor>
         </Text>
       </HStack>
