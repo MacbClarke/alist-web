@@ -20,7 +20,6 @@ export const Header = () => {
   const logos = getSetting("logo").split("\n")
   const siteName = getSetting("site_title")
   const logo = useColorModeValue(logos[0], logos.pop())
-  console.log(logo())
   return (
     <Center
       class="header"
