@@ -134,21 +134,21 @@ const theme: HopeThemeConfig = {
         },
       },
     },
-    Anchor: {
-      baseStyle: {
-        rounded: "$lg",
-        px: "$1_5",
-        py: "$1",
-        _hover: {
-          bgColor: hoverColor(),
-          textDecoration: "none",
-        },
-        _focus: {
-          boxShadow: "unset",
-        },
-        _active: { transform: "scale(.95)", transition: "0.1s" },
-      },
-    },
+    // Anchor: {
+    //   baseStyle: {
+    //     rounded: "$lg",
+    //     px: "$1_5",
+    //     py: "$1",
+    //     _hover: {
+    //       bgColor: hoverColor(),
+    //       textDecoration: "none",
+    //     },
+    //     _focus: {
+    //       boxShadow: "unset",
+    //     },
+    //     _active: { transform: "scale(.95)", transition: "0.1s" },
+    //   },
+    // },
     Modal: {
       baseStyle: {
         content: {

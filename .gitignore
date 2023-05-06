@@ -1,5 +1,6 @@
 node_modules
 dist
+solid-router
 /src/lang/*
 !/src/lang/en/
 .DS_Store

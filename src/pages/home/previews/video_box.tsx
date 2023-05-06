@@ -51,7 +51,7 @@ export const VideoBox = (props: { children: JSXElement }) => {
         value={objStore.obj.name}
         options={videos.map((obj) => ({ value: obj.name }))}
       />
-      <Flex wrap="wrap" gap="$1" justifyContent="center">
+      <Flex wrap="wrap" gap="$4" justifyContent="center">
         <For each={players}>
           {(item) => {
             return (

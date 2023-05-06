@@ -5,8 +5,9 @@ import {
   Center,
   Icon,
   Kbd,
+  Text,
 } from "@hope-ui/solid"
-import { Show } from "solid-js"
+import { Match, Show, Switch } from "solid-js"
 import { getSetting, objStore, State } from "~/store"
 import { BsSearch } from "solid-icons/bs"
 import { CenterLoading } from "~/components"
@@ -17,7 +18,9 @@ import { isMac } from "~/utils/compatibility"
 
 export const Header = () => {
   const logos = getSetting("logo").split("\n")
+  const siteName = getSetting("site_title")
   const logo = useColorModeValue(logos[0], logos.pop())
+  console.log(logo())
   return (
     <Center
       class="header"
@@ -32,12 +35,22 @@ export const Header = () => {
           justifyContent="space-between"
         >
           <HStack class="header-left" h="44px">
-            <Image
-              src={logo()!}
-              h="$full"
-              w="auto"
-              fallback={<CenterLoading />}
-            />
+            <Switch>
+              <Match when={logo() !== ""}>
+                <Image
+                  src={logo()!}
+                  h="$full"
+                  w="auto"
+                  fallback={<CenterLoading />}
+                />
+              </Match>
+              <Match when={logo() === ""}>
+                <Text size="2xl">{siteName}</Text>
+              </Match>
+            </Switch>
+            {/*<Show when={logo() !== ""}>*/}
+            {/*  */}
+            {/*</Show>*/}
           </HStack>
           <HStack class="header-right" spacing="$2">
             <Show when={objStore.state === State.Folder}>
