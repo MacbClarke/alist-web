@@ -21,10 +21,12 @@ import { useRouter, useT } from "~/hooks"
 import { SideMenu } from "./SideMenu"
 import { side_menu_items } from "./sidemenu_items"
 import { changeToken, notify } from "~/utils"
+import { getSetting } from "~/store"
 const { isOpen, onOpen, onClose } = createDisclosure()
 
 const Header = () => {
   const t = useT()
+  const siteName = getSetting("site_title")
   const { to } = useRouter()
   return (
     <Box
@@ -53,11 +55,12 @@ const Header = () => {
             fontSize="$xl"
             color="$info9"
             cursor="pointer"
+            display={{ "@initial": "none", "@sm": "block" }}
             onClick={() => {
               to("/@manage")
             }}
           >
-            {t("manage.title")}
+            {`${siteName} ${t("home.footer.manage")}`}
           </Heading>
         </HStack>
         <HStack spacing="$1">
@@ -77,7 +80,15 @@ const Header = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader color="$info9">{t("manage.title")}</DrawerHeader>
+          <DrawerHeader
+            color="$info9"
+            cursor="pointer"
+            onClick={() => {
+              to("/@manage")
+            }}
+          >
+            {`${siteName} ${t("home.footer.manage")}`}
+          </DrawerHeader>
           <DrawerBody>
             <SideMenu items={side_menu_items} />
             <Center>
