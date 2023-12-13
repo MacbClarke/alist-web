@@ -23,6 +23,7 @@
   },
   "home_icon": "Home icon",
   "iframe_previews": "Iframe previews",
+  "ignore_direct_link_params": "Ignore direct link params",
   "ignore_paths": "Ignore paths",
   "ignore_paths-tips": "one path per line",
   "image_types": "Image types",
@@ -46,6 +47,7 @@
   "proxy_types": "Proxy types",
   "qbittorrent_seedtime": "Qbittorrent seedtime",
   "qbittorrent_url": "Qbittorrent url",
+  "robots_txt": "Robots txt",
   "search_index": "Search index",
   "search_indexs": {
     "bleve": "Bleve",
@@ -61,8 +63,12 @@
   "sign_all": "Sign all",
   "site_title": "Site title",
   "sso_application_name": "Sso application name",
+  "sso_auto_register": "Sso auto register",
   "sso_client_id": "Sso client id",
   "sso_client_secret": "Sso client secret",
+  "sso_compatibility_mode": "Sso compatibility mode",
+  "sso_default_dir": "Sso default dir",
+  "sso_default_permission": "Sso default permission",
   "sso_endpoint_name": "Sso endpoint name",
   "sso_jwt_public_key": "Sso jwt public key",
   "sso_login_enabled": "Sso login enabled",
@@ -72,12 +78,15 @@
     "Dingtalk": "Dingtalk",
     "Github": "Github",
     "Google": "Google",
-    "Microsoft": "Microsoft"
+    "Microsoft": "Microsoft",
+    "OIDC": "OIDC"
   },
+  "sso_oidc_username_key": "Sso oidc username key",
   "sso_organization_name": "Sso organization name",
   "text_types": "Text types",
   "token": "Token",
   "version": "Version",
   "video_autoplay": "Video autoplay",
-  "video_types": "Video types"
+  "video_types": "Video types",
+  "webauthn_login_enabled": "Webauthn login enabled"
 }

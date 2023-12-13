@@ -1,5 +1,5 @@
-import { Box, VStack } from "@hope-ui/solid"
-import { onCleanup, onMount } from "solid-js"
+import { Box } from "@hope-ui/solid"
+import { createSignal, onCleanup, onMount } from "solid-js"
 import { useRouter, useLink, useFetch } from "~/hooks"
 import { getSettingBool, objStore, password } from "~/store"
 import { ObjType, PResp } from "~/types"
@@ -39,7 +39,7 @@ export interface Meta {
 }
 
 const Preview = () => {
-  const { replace } = useRouter()
+  const { replace, pathname } = useRouter()
   const { proxyLink } = useLink()
   let videos = objStore.objs.filter((obj) => obj.type === ObjType.VIDEO)
   if (videos.length === 0) {
@@ -47,7 +47,7 @@ const Preview = () => {
   }
   let player: Artplayer
   let option: any = {
-    id: "player",
+    id: pathname(),
     container: "#video-player",
     title: objStore.obj.name,
     volume: 0.5,
@@ -139,21 +139,20 @@ const Preview = () => {
       }),
     ]
   }
-  const { pathname } = useRouter()
   const [loading, post] = useFetch(
     (): PResp<Data> =>
       r.post("/fs/other", {
         path: pathname(),
         password: password(),
         method: "video_preview",
-      })
+      }),
   )
   onMount(async () => {
     const resp = await post()
     handleResp(resp, (data) => {
       const list =
         data.video_preview_play_info.live_transcoding_task_list.filter(
-          (l) => l.url
+          (l) => l.url,
         )
       if (list.length === 0) {
         notify.error("No transcoding video found")
@@ -169,18 +168,56 @@ const Preview = () => {
       })
       player = new Artplayer(option)
       player.on("video:ended", () => {
+        if (!autoNext()) return
         const index = videos.findIndex((f) => f.name === objStore.obj.name)
         if (index < videos.length - 1) {
           replace(videos[index + 1].name)
         }
       })
+      // Fixed subtitle loss when switching videos with different resolutions
+      if (subtitle) {
+        player.on("video:play", (_url) => {
+          player.subtitle.url = proxyLink(subtitle, true)
+        })
+      }
+      interval = window.setInterval(resetPlayUrl, 1000 * 60 * 14)
     })
   })
+  let interval: number
+  let curSeek: number
+  async function resetPlayUrl() {
+    const resp = await post()
+    handleResp(resp, async (data) => {
+      const list =
+        data.video_preview_play_info.live_transcoding_task_list.filter(
+          (l) => l.url,
+        )
+      if (list.length === 0) {
+        notify.error("No transcoding video found")
+        return
+      }
+      const quality = list.map((item, i) => {
+        return {
+          html: item.template_id,
+          url: item.url,
+          default: i === list.length - 1,
+        }
+      })
+      player.quality = quality
+      curSeek = player.currentTime
+      await player.switchUrl(quality[quality.length - 1].url)
+      setTimeout(() => {
+        player.seek = curSeek
+      }, 1000)
+    })
+  }
   onCleanup(() => {
     player?.destroy()
+    window.clearInterval(interval)
   })
+  const [autoNext, setAutoNext] = createSignal()
   return (
-    <VideoBox>
+    <VideoBox onAutoNextChange={setAutoNext}>
       <Box w="$full" h="60vh" id="video-player" />
     </VideoBox>
   )
