@@ -50,7 +50,8 @@ export const useObjTitle = () => {
 export const useManageTitle = (title: string) => {
   const t = useT()
   useTitle(
-    () => `${t(title)} | ${getSetting("site_title")} ${t("home.footer.manage")}`
+    () =>
+      `${t(title)} | ${getSetting("site_title")} ${t("home.footer.manage")}`,
   )
 }
 
