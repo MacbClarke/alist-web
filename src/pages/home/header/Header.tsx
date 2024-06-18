@@ -6,6 +6,7 @@ import {
   Icon,
   Kbd,
   CenterProps,
+  Text,
 } from "@hope-ui/solid"
 import { changeColor } from "seemly"
 import { Show, createMemo } from "solid-js"
