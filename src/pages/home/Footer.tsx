@@ -15,6 +15,15 @@ export const Footer = () => {
           <Anchor href="https://github.com/Xhofe/alist" external>
             AList
           </Anchor>
+          <span>{" | "}</span>
+          <AnchorWithBase
+            as={Link}
+            href={UserMethods.is_guest(me()) ? "/@login" : "/@manage"}
+          >
+            {t(
+              UserMethods.is_guest(me()) ? "login.login" : "home.footer.manage",
+            )}
+          </AnchorWithBase>
         </Text>
       </HStack>
     </VStack>

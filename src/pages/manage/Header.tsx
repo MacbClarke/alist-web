@@ -17,17 +17,28 @@ import {
 import { TiThMenu } from "solid-icons/ti"
 import { IoExit } from "solid-icons/io"
 import { SwitchColorMode, SwitchLanguageWhite } from "~/components"
-import { useRouter, useT } from "~/hooks"
+import { useFetch, useRouter, useT } from "~/hooks"
 import { SideMenu } from "./SideMenu"
 import { side_menu_items } from "./sidemenu_items"
-import { changeToken, notify } from "~/utils"
+import { changeToken, notify, handleResp, r } from "~/utils"
 import { getSetting } from "~/store"
+import { PResp } from "~/types"
 const { isOpen, onOpen, onClose } = createDisclosure()
+const [logOutReqLoading, logOutReq] = useFetch(
+  (): PResp<any> => r.get("/auth/logout"),
+)
 
 const Header = () => {
   const t = useT()
   const siteName = getSetting("site_title")
   const { to } = useRouter()
+  const logOut = async () => {
+    handleResp(await logOutReq(), () => {
+      changeToken()
+      notify.success(t("manage.logout_success"))
+      to(`/@login?redirect=${encodeURIComponent(location.pathname)}`)
+    })
+  }
   return (
     <Box
       as="header"
@@ -67,11 +78,8 @@ const Header = () => {
           <IconButton
             aria-label="logout"
             icon={<IoExit />}
-            onClick={() => {
-              changeToken()
-              notify.success(t("manage.logout_success"))
-              to(`/@login?redirect=${encodeURIComponent(location.pathname)}`)
-            }}
+            loading={logOutReqLoading()}
+            onClick={logOut}
             size="sm"
           />
         </HStack>
